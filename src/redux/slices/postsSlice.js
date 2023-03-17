@@ -35,6 +35,7 @@ export const updatePost = createAsyncThunk(
         try{
             console.log('called');
             const response = await axiosClient.put("/posts/", body);
+            console.log(response.result.post)
             return response.result.post;
         }
         catch(error){

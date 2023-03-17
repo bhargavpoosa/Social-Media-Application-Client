@@ -1,7 +1,7 @@
 import React,{useState} from 'react'
 import {AiOutlineClose} from 'react-icons/ai';
 import Avatar from "../avatar/Avatar";
-import { BsCardImage } from "react-icons/bs";
+import { RxUpdate } from "react-icons/rx";
 import {useDispatch} from 'react-redux';
 import { updatePost} from "../../redux/slices/postsSlice";
 import "./UpdatePost.scss";
@@ -10,24 +10,26 @@ import "./UpdatePost.scss";
 function UpdatePost({ post, onClose }) {
     console.log('updatepost');
     const dispatch = useDispatch();
-    const [postImg, setPostImg] = useState(post?.image?.url);
+    const [updatePostImg, setUpdatePostImg] = useState(post?.image?.url);
     const [caption, setCaption] = useState(post.caption)
 
     async function hanldeEditPostSubmit(){
         dispatch(updatePost({
             postId: post._id,
-            caption
+            caption,
+            updatePostImg
         }))
         onClose();
 
     }
     const handleImageEdit = (e) => {
+        console.log('In update')
         const file = e.target.files[0];
         const fileReader = new FileReader();
         fileReader.readAsDataURL(file);
         fileReader.onload = () => {
             if (fileReader.readyState === fileReader.DONE) {
-                setPostImg(fileReader.result);
+                setUpdatePostImg(fileReader.result);
                 console.log("img data", fileReader.result);
             }
         };
@@ -44,16 +46,15 @@ function UpdatePost({ post, onClose }) {
             </div>
             <div className="main">
                 <div className='main-left'>
-                    {postImg && (
+                    {updatePostImg && 
                         <div className="img-container">
                             <img
                                 className="post-img"
-                                src={postImg}
+                                src={updatePostImg}
                                 alt="post-img"
                             />
-                        </div>
-                    )}
-                    {/* <img src={post?.image?.url} alt="" /> */}
+                        </div>  
+                    }
                 </div>
                 <div className='main-right'>
                     <div className='right-header'>
@@ -66,17 +67,17 @@ function UpdatePost({ post, onClose }) {
                     </div>
                     <div className='right-footer'>
                         <div className="input-post-img">
-                            <label htmlFor="inputImg" className="labelImg">
-                                <BsCardImage />
+                            <label htmlFor="updateinputImg" className="updatelabelImg">
+                                <RxUpdate />
                             </label>
                             <input
-                                className="inputImg"
-                                id="inputImg"
+                                className="updateinputImg"
+                                id="updateinputImg"
                                 type="file"
                                 accept="image/*"
                                 onChange={handleImageEdit}
-                            />
-                        </div>
+                            /> 
+                        </div> 
                         <button className="edit-post-btn btn-primary" onClick={hanldeEditPostSubmit}>Edit</button>
                     </div>  
                 </div>
